@@ -1,6 +1,5 @@
 board = [' ' for x in range(10)]
 
-
 def printBoard(board):
     print(' ' + board[1] + ' | ' + board[2] + ' | ' + board[3])
     print('----------')
@@ -8,21 +7,51 @@ def printBoard(board):
     print('----------')
     print(' ' + board[7] + ' | ' + board[8] + ' | ' + board[9])
 
+def isFreeSpace(position):
+    return board[position] == ' '
+       
+def isBoardFull(board):
+    if board.count(' ') < 1:
+        return True
+    else:
+        return False
 
-def getMove():
-    for x in range(10):
+def insertLetter(letter, position):
+    board[position] = letter
+
+def makeMove(player):
+        continueTurn = True
+        while continueTurn:
+            playerMove = input("Select your move: ")
+            try:
+                playerMove = int(playerMove)
+
+                if playerMove > 1 or playerMove < 10:
+                    if isFreeSpace(playerMove):
+                        insertLetter(player,playerMove)
+                        continueTurn = False
+                    else:
+                        print("space is already taken")
+                else:
+                    print("Move is out of range")
+            except:
+                print('not a number')
+           
+                
+            
+
+
+
+def main():
+    
+    numberOfMoves = 0
+    player = input("X or O: ")
+
+    while not (isBoardFull(board)):
         printBoard(board)
-        playerMove = int(input("Select your move: "))
+        makeMove(player)
 
-        if playerMove < 1 or playerMove > 9:
-            print("move out of range: ")
-            continue
-
-        if board[playerMove] != ' ':
-            print("space is already taken")
-            continue
-        else:
-            board[playerMove] = 'x'
+    print('board is full')
 
 
-getMove()
+main()
