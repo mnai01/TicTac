@@ -7,6 +7,7 @@ def printBoard(board):
     print('----------')
     print(' ' + board[7] + ' | ' + board[8] + ' | ' + board[9])
 
+   
 def isFreeSpace(position):
     return board[position] == ' '
        
@@ -38,13 +39,21 @@ def makeMove(player):
                 print('not a number')
            
                 
-            
+def checkWinner():
+        # should not be =='x', maybe we will add a parameter so we can call the function once with O and once with X to check which letter wins
+    if((board[1] == 'x' and board[2] == 'x' and board[3] == 'x') or
+       (board[4] == 'x' and board[5] == 'x' and board[6] == 'x') or
+        (board[7] == 'x' and board[8] == 'x' and board[9] == 'x') or
+        (board[1] == 'x' and board[5] == 'x' and board[9] == 'x') or
+        (board[7] == 'x' and board[5] == 'x' and board[3] == 'x') or
+        (board[1] == 'x' and board[4] == 'x' and board[7] == 'x') or
+        (board[2] == 'x' and board[5] == 'x' and board[8] == 'x') or
+            (board[3] == 'x' and board[6] == 'x' and board[9] == 'x')):
+        return(True)            
 
 
 
 def main():
-    
-    numberOfMoves = 0
     player = input("X or O: ")
 
     while not (isBoardFull(board)):
@@ -55,3 +64,9 @@ def main():
 
 
 main()
+
+
+
+
+
+
