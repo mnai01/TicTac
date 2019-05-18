@@ -12,7 +12,7 @@ def isFreeSpace(position):
     return board[position] == ' '
        
 def isBoardFull(board):
-    if board.count(' ') <= 1:
+    if board.count(' ') == 1:
         return True
     else:
         return False
@@ -23,7 +23,7 @@ def insertLetter(letter, position):
 def makeMove(player):
         continueTurn = True
         while continueTurn:
-            playerMove = input( player + ' select your move: ')
+            playerMove = input( player + ' select your move (1-9): ')
             try:
                 playerMove = int(playerMove)
                 if playerMove > 0 and playerMove < 10:
@@ -31,15 +31,15 @@ def makeMove(player):
                         insertLetter(player,playerMove)
                         continueTurn = False
                     else:
-                        print("space is already taken")
+                        print("Please choose an empty space")
                 else:
-                    print("Move is out of range")
+                    print("Please enter a number 1-9")
             except ValueError:
-                print('not a number')
+                print('Please enter a number 1-9')
            
                 
 def checkWinner(board,letter):
-        # should not be x, maybe we will add a parameter so we can call the function once with O and once with X to check which letter wins
+     #checks all 8 possible solutions to see if X or O is the winner
     if((board[1] ==letter and board[2] ==letter and board[3] ==letter) or
        (board[4] ==letter and board[5] ==letter and board[6] ==letter) or
         (board[7] ==letter and board[8] ==letter and board[9] ==letter) or
@@ -52,26 +52,40 @@ def checkWinner(board,letter):
         (board[3] ==letter and board[5] ==letter and board[7] ==letter)):
         return True            
 
-
-
 def main():
+
+   hasWinner = False
+   #default each player to a certain letter
    player = 'X'
    player2 = 'O'
+   
+   #print blank board for user to choose a spot
    printBoard(board)
    
    while not (isBoardFull(board)):
-       makeMove(player)
-       printBoard(board)
+ 
+       #if player2 didnt win, player1 goes
+        if not checkWinner(board,player2):
+            makeMove(player)
+            printBoard(board)
+        else:
+            print(player2 + ' is the winner')
+            break
 
-       if checkWinner(board,player):
-           print('Game over, ' + player + ' is the')
-           break
-       makeMove(player2)
-       printBoard(board)
+        #if player1 didnt win, player2 goes
+        if not checkWinner(board,player):
+            makeMove(player2)
+            printBoard(board)
+        else:
+            print(player + ' is the winner')
+            break   
 
-       if checkWinner(board,player2):
-           print('Game over, ' + player2 + ' is the winner')
-           break
+   #display full board and notify players it was a tie
+   if isBoardFull(board):
+    printBoard(board)
+    print('Its a tie! The board is full')
+
+
 main()
 
 
