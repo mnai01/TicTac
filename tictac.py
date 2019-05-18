@@ -12,7 +12,7 @@ def isFreeSpace(position):
     return board[position] == ' '
        
 def isBoardFull(board):
-    if board.count(' ') < 1:
+    if board.count(' ') <= 1:
         return True
     else:
         return False
@@ -23,11 +23,10 @@ def insertLetter(letter, position):
 def makeMove(player):
         continueTurn = True
         while continueTurn:
-            playerMove = input("Select your move: ")
+            playerMove = input( player + ' select your move: ')
             try:
                 playerMove = int(playerMove)
-
-                if playerMove > 1 or playerMove < 10:
+                if playerMove > 0 and playerMove < 10:
                     if isFreeSpace(playerMove):
                         insertLetter(player,playerMove)
                         continueTurn = False
@@ -35,34 +34,44 @@ def makeMove(player):
                         print("space is already taken")
                 else:
                     print("Move is out of range")
-            except:
+            except ValueError:
                 print('not a number')
            
                 
-def checkWinner():
-        # should not be =='x', maybe we will add a parameter so we can call the function once with O and once with X to check which letter wins
-    if((board[1] == 'x' and board[2] == 'x' and board[3] == 'x') or
-       (board[4] == 'x' and board[5] == 'x' and board[6] == 'x') or
-        (board[7] == 'x' and board[8] == 'x' and board[9] == 'x') or
-        (board[1] == 'x' and board[5] == 'x' and board[9] == 'x') or
-        (board[7] == 'x' and board[5] == 'x' and board[3] == 'x') or
-        (board[1] == 'x' and board[4] == 'x' and board[7] == 'x') or
-        (board[2] == 'x' and board[5] == 'x' and board[8] == 'x') or
-            (board[3] == 'x' and board[6] == 'x' and board[9] == 'x')):
-        return(True)            
+def checkWinner(board,letter):
+        # should not be x, maybe we will add a parameter so we can call the function once with O and once with X to check which letter wins
+    if((board[1] ==letter and board[2] ==letter and board[3] ==letter) or
+       (board[4] ==letter and board[5] ==letter and board[6] ==letter) or
+        (board[7] ==letter and board[8] ==letter and board[9] ==letter) or
+
+        (board[1] ==letter and board[4] ==letter and board[7] ==letter) or
+        (board[2] ==letter and board[5] ==letter and board[8] ==letter) or
+        (board[3] ==letter and board[6] ==letter and board[9] ==letter) or
+
+        (board[1] ==letter and board[5] ==letter and board[9] ==letter) or
+        (board[3] ==letter and board[5] ==letter and board[7] ==letter)):
+        return True            
 
 
 
 def main():
-    player = input("X or O: ")
+   player = 'X'
+   player2 = 'O'
+   printBoard(board)
+   
+   while not (isBoardFull(board)):
+       makeMove(player)
+       printBoard(board)
 
-    while not (isBoardFull(board)):
-        printBoard(board)
-        makeMove(player)
+       if checkWinner(board,player):
+           print('Game over, ' + player + ' is the')
+           break
+       makeMove(player2)
+       printBoard(board)
 
-    print('board is full')
-
-
+       if checkWinner(board,player2):
+           print('Game over, ' + player2 + ' is the winner')
+           break
 main()
 
 
