@@ -36,12 +36,12 @@ def makeMove(player):
                     print("Please enter a number 1-9")
             except ValueError:
                 print('Please enter a number 1-9')
-           
-                
+
+
 def checkWinner(board,letter):
      #checks all 8 possible solutions to see if X or O is the winner
-    if((board[1] ==letter and board[2] ==letter and board[3] ==letter) or
-       (board[4] ==letter and board[5] ==letter and board[6] ==letter) or
+    if ((board[1] ==letter and board[2] ==letter and board[3] ==letter) or
+        (board[4] ==letter and board[5] ==letter and board[6] ==letter) or
         (board[7] ==letter and board[8] ==letter and board[9] ==letter) or
 
         (board[1] ==letter and board[4] ==letter and board[7] ==letter) or
@@ -50,7 +50,20 @@ def checkWinner(board,letter):
 
         (board[1] ==letter and board[5] ==letter and board[9] ==letter) or
         (board[3] ==letter and board[5] ==letter and board[7] ==letter)):
-        return True            
+            return True
+    else:
+            return False
+
+
+def getOpenSpaces():
+    #list to be returned containing all available spaces
+    availMoves = []
+
+    #must enumerate board in order to iterate through it using indices and its values
+    for x,letter in enumerate(board):
+        if board[x] == ' ' and x != 0:
+            availMoves.append(x)
+    return availMoves
 
 def main():
    #default each player to a certain letter
@@ -64,6 +77,8 @@ def main():
  
        #if player2 didnt win, player1 goes
         if not checkWinner(board,player2):
+            openSpaces = getOpenSpaces()
+            print('PLayer1 open spaces: ' + str(openSpaces))
             makeMove(player)
             printBoard(board)
         else:
@@ -72,6 +87,8 @@ def main():
 
         #if player1 didnt win, player2 goes
         if not checkWinner(board,player):
+            openSpaces = getOpenSpaces()
+            print('PLayer2 open spaces: ' + str(openSpaces))
             makeMove(player2)
             printBoard(board)
         else:
