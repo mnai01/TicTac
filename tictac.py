@@ -53,8 +53,6 @@ def checkWinner(board,letter):
         return True            
 
 def main():
-
-   hasWinner = False
    #default each player to a certain letter
    player = 'X'
    player2 = 'O'
