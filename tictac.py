@@ -1,104 +1,141 @@
+import random
+
 board = [' ' for x in range(10)]
 
 def printBoard(board):
-    print(' ' + board[1] + ' | ' + board[2] + ' | ' + board[3])
-    print('----------')
-    print(' ' + board[4] + ' | ' + board[5] + ' | ' + board[6])
-    print('----------')
-    print(' ' + board[7] + ' | ' + board[8] + ' | ' + board[9])
+ print(' ' + board[1] + ' | ' + board[2] + ' | ' + board[3])
+ print('----------')
+ print(' ' + board[4] + ' | ' + board[5] + ' | ' + board[6])
+ print('----------')
+ print(' ' + board[7] + ' | ' + board[8] + ' | ' + board[9])
 
-   
+
 def isFreeSpace(position):
-    return board[position] == ' '
-       
+ return board[position] == ' '
+    
 def isBoardFull(board):
-    if board.count(' ') == 1:
-        return True
-    else:
-        return False
+ if board.count(' ') == 1:
+     return True
+ else:
+     return False
 
 def insertLetter(letter, position):
-    board[position] = letter
+ board[position] = letter
 
-def makeMove(player):
-        continueTurn = True
-        while continueTurn:
-            playerMove = input( player + ' select your move (1-9): ')
-            try:
-                playerMove = int(playerMove)
-                if playerMove > 0 and playerMove < 10:
-                    if isFreeSpace(playerMove):
-                        insertLetter(player,playerMove)
-                        continueTurn = False
-                    else:
-                        print("Please choose an empty space")
-                else:
-                    print("Please enter a number 1-9")
-            except ValueError:
-                print('Please enter a number 1-9')
+def playerMove (player):
+ continueTurn = True
+ while continueTurn:
+  playerMove = input( player + ' select your move (1-9): ')
+  try:
+   playerMove = int(playerMove)
+   if playerMove > 0 and playerMove < 10:
+    if isFreeSpace(playerMove):
+     insertLetter(player,playerMove)
+     continueTurn = False
+    else:
+     print("Please choose an empty space")
+   else:
+    print("Please enter a number 1-9")
+  except ValueError:
+   print('Please enter a number 1-9')
 
 
 def checkWinner(board,letter):
-     #checks all 8 possible solutions to see if X or O is the winner
-    if ((board[1] ==letter and board[2] ==letter and board[3] ==letter) or
-        (board[4] ==letter and board[5] ==letter and board[6] ==letter) or
-        (board[7] ==letter and board[8] ==letter and board[9] ==letter) or
+  #checks all 8 possible solutions to see if X or O is the winner
+ if ((board[1] == letter and board[2] == letter and board[3] == letter) or
+  (board[4] == letter and board[5] == letter and board[6] == letter) or
+  (board[7] == letter and board[8] == letter and board[9] == letter) or
 
-        (board[1] ==letter and board[4] ==letter and board[7] ==letter) or
-        (board[2] ==letter and board[5] ==letter and board[8] ==letter) or
-        (board[3] ==letter and board[6] ==letter and board[9] ==letter) or
+  (board[1] == letter and board[4] == letter and board[7] == letter) or
+  (board[2] == letter and board[5] == letter and board[8] == letter) or
+  (board[3] == letter and board[6] == letter and board[9] == letter) or
 
-        (board[1] ==letter and board[5] ==letter and board[9] ==letter) or
-        (board[3] ==letter and board[5] ==letter and board[7] ==letter)):
-            return True
-    else:
-            return False
+  (board[1] == letter and board[5] == letter and board[9] == letter) or
+  (board[3] == letter and board[5] == letter and board[7] == letter)):
+   return True
+ else:
+   return False
 
 
-def getOpenSpaces():
-    #list to be returned containing all available spaces
-    availMoves = []
+def getOpenSpaces(board):
+ #list to be returned containing all available spaces
+ availMoves = []
 
-    #must enumerate board in order to iterate through it using indices and its values
-    for x,letter in enumerate(board):
-        if board[x] == ' ' and x != 0:
-            availMoves.append(x)
-    return availMoves
+ #must enumerate board in order to iterate through it using indices and its values
+ for x,letter in enumerate(board):
+  if board[x] == ' ' and x != 0:
+    availMoves.append(x)
+ return availMoves
+
+def computerMove(letter):
+ possibleMoves = getOpenSpaces(board)
+ move = 0
+
+ while True:
+
+  #check 
+  for letter in ('X','O'):
+   for x in possibleMoves:
+    boardCopy = list(board)
+    boardCopy[x] = letter
+    if checkWinner(board,letter):
+     move = X
+     insertLetter(letter,move)
+     break
+
+  openCorners = []
+  for x in possibleMoves:
+   if x in [1,3,7,9]:
+    openCorners.append(x)
+  move = random.choice(openCorners)
+  insertLetter(letter,move)
+  break
+
+  if 5 in possibleMoves:
+   move = 5
+   insertLetter(letter,move)
+   break
+
+
 
 def main():
-   #default each player to a certain letter
-   player = 'X'
-   player2 = 'O'
-   
-   #print blank board for user to choose a spot
-   printBoard(board)
-   
-   while not (isBoardFull(board)):
- 
-       #if player2 didnt win, player1 goes
-        if not checkWinner(board,player2):
-            openSpaces = getOpenSpaces()
-            print('PLayer1 open spaces: ' + str(openSpaces))
-            makeMove(player)
-            printBoard(board)
+ while True:
+    player = input("Would you like to be X or O: ") 
+    if player.upper() not in ('X','O'):
+        continue
+    else:
+        player = player.upper()
+        if player =='X':
+            computer = 'O'
+            break
         else:
-            print(player2 + ' is the winner')
+            computer = 'X'
             break
 
-        #if player1 didnt win, player2 goes
+ printBoard(board)
+
+ while not (isBoardFull(board)):
+       #if the computer didnt win, player1 goes
+        if not checkWinner(board,computer):
+            playerMove(player)
+            printBoard(board)
+        else:
+            print(computer + ' is the winner')
+            break
+
+        #if player1 didnt win, the computer goes
         if not checkWinner(board,player):
-            openSpaces = getOpenSpaces()
-            print('PLayer2 open spaces: ' + str(openSpaces))
-            makeMove(player2)
+            computerMove(computer)
             printBoard(board)
         else:
             print(player + ' is the winner')
             break   
 
    #display full board and notify players it was a tie
-   if isBoardFull(board):
+ if isBoardFull(board):
     printBoard(board)
     print('Its a tie! The board is full')
+
 
 
 main()
