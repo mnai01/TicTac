@@ -1,4 +1,5 @@
 import random
+import copy
 
 board = [' ' for x in range(10)]
 
@@ -68,41 +69,50 @@ def getOpenSpaces(board):
  return availMoves
 
 
-def computerMove(letter):
+def computerMove(completter):
  possibleMoves = getOpenSpaces(board)
  move = 0
 
  while True:
   for letter in ('X','O'):
    for x in possibleMoves:
-    boardCopy = list(board)
+    boardCopy = copy.copy(board)
     boardCopy[x] = letter
     if checkWinner(boardCopy,letter):
      move = x
-     insertLetter(letter,move)
+     insertLetter(completter,move)
      print('Computer moved to space ' + str(move))
-     break
+     return
+
+  if 5 in possibleMoves:
+   move = 5
+   insertLetter(completter,move)
+   print('Computer moved to space ' + str(move))
+   break
 
   openCorners = []
   for x in possibleMoves:
    if x in [1,3,7,9]:
     openCorners.append(x)
   move = random.choice(openCorners)
-  insertLetter(letter,move)
+  #maybe make a function here to pick a better corner than random
+  insertLetter(completter,move)
   print('Computer moved to space ' + str(move))
   break
 
-  if 5 in possibleMoves:
-   move = 5
-   insertLetter(letter,move)
-   print('Computer moved to space ' + str(move))
-   break
+  
 
 
 
 def main():
+ print('Use numbers 1-9 to place your X\'s or O\'s.')
+ print(' ' + '1' + ' | ' + '2' + ' | ' + '3')
+ print('----------')
+ print(' ' + '4' + ' | ' + '5' + ' | ' + '6')
+ print('----------')
+ print(' ' + '7'+ ' | ' + '9' + ' | ' + '9')
  while True:
-    player = input("Would you like to be X or O: ") 
+    player = input('\nWould you like to be X or O: ')    
     if player.upper() not in ('X','O'):
         continue
     else:
@@ -127,8 +137,11 @@ def main():
 
         #if player1 didnt win, the computer goes
         if not checkWinner(board,player):
-            computerMove(computer)
-            printBoard(board)
+            if isBoardFull(board):
+                break
+            else:    
+                computerMove(computer)
+                printBoard(board)
         else:
             print(player + ' is the winner')
             break   
