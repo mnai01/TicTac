@@ -67,20 +67,20 @@ def getOpenSpaces(board):
     availMoves.append(x)
  return availMoves
 
+
 def computerMove(letter):
  possibleMoves = getOpenSpaces(board)
  move = 0
 
  while True:
-
-  #check 
   for letter in ('X','O'):
    for x in possibleMoves:
     boardCopy = list(board)
     boardCopy[x] = letter
-    if checkWinner(board,letter):
-     move = X
+    if checkWinner(boardCopy,letter):
+     move = x
      insertLetter(letter,move)
+     print('Computer moved to space ' + str(move))
      break
 
   openCorners = []
@@ -89,11 +89,13 @@ def computerMove(letter):
     openCorners.append(x)
   move = random.choice(openCorners)
   insertLetter(letter,move)
+  print('Computer moved to space ' + str(move))
   break
 
   if 5 in possibleMoves:
    move = 5
    insertLetter(letter,move)
+   print('Computer moved to space ' + str(move))
    break
 
 
