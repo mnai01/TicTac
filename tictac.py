@@ -3,6 +3,7 @@ import copy
 
 board = [' ' for x in range(10)]
 
+
 def printBoard(board):
  print(' ' + board[1] + ' | ' + board[2] + ' | ' + board[3])
  print('----------')
@@ -10,10 +11,13 @@ def printBoard(board):
  print('----------')
  print(' ' + board[7] + ' | ' + board[8] + ' | ' + board[9])
 
-
+def clearBoard(board):
+    for i in range(10):
+        board[i] = ' '
 def isFreeSpace(position):
  return board[position] == ' '
     
+
 def isBoardFull(board):
  if board.count(' ') == 1:
      return True
@@ -22,6 +26,7 @@ def isBoardFull(board):
 
 def insertLetter(letter, position):
  board[position] = letter
+
 
 def playerMove (player):
  continueTurn = True
@@ -61,7 +66,6 @@ def checkWinner(board,letter):
 def getOpenSpaces(board):
  #list to be returned containing all available spaces
  availMoves = []
-
  #must enumerate board in order to iterate through it using indices and its values
  for x,letter in enumerate(board):
   if board[x] == ' ' and x != 0:
@@ -73,6 +77,11 @@ def computerMove(completter):
  possibleMoves = getOpenSpaces(board)
  move = 0
 
+#This loop checks each letter in all positions of the board chekcing which one is a winning solution. 
+#If it find a solution it will take that position to either win or block the opponent
+#It then checks to see if the middle is open and takes that spot if it can
+#If it cannot, it checks which corners are open and randomly picks one
+#This has a time complexity of O(n^2) since we have to check both letters in all positions
  while True:
   for letter in ('X','O'):
    for x in possibleMoves:
@@ -90,66 +99,101 @@ def computerMove(completter):
    print('Computer moved to space ' + str(move))
    break
 
+  #This is O(n) since we have to loop through all of the possible solutions
   openCorners = []
   for x in possibleMoves:
    if x in [1,3,7,9]:
     openCorners.append(x)
-  move = random.choice(openCorners)
-  #maybe make a function here to pick a better corner than random
-  insertLetter(completter,move)
-  print('Computer moved to space ' + str(move))
-  break
+  if openCorners:
+    #maybe make a function here to pick a better corner than random
+    move = random.choice(openCorners)
+    insertLetter(completter,move)
+    print('Computer moved to space ' + str(move))
+    break
+  else:
+      openEdges = []
+      for x in possibleMoves:
+        if x in [2,4,6,8]:
+         openEdges.append(x)
+      move = random.choice(openEdges)
+      print('Computer moved to space ' + str(move))
+      break
 
-  
 
 
+def gameOver():
+   while True: 
+       playAgain = input('Would you like to play again (y/n): ')
+       if playAgain.upper() not in ('Y', 'N','YES','NO'):
+           print("Enter yes or no (y/n)")
+           continue
+       else:
+           if playAgain.upper() in ('Y','YES'):
+               return True
+           else:
+               return False 
 
 def main():
+ 
+ #Set to false when user says they do not want to play anymore, other wise
+ #the game is keep running
+ gameState = True
+
  print('Use numbers 1-9 to place your X\'s or O\'s.')
  print(' ' + '1' + ' | ' + '2' + ' | ' + '3')
  print('----------')
  print(' ' + '4' + ' | ' + '5' + ' | ' + '6')
  print('----------')
  print(' ' + '7'+ ' | ' + '9' + ' | ' + '9')
- while True:
-    player = input('\nWould you like to be X or O: ')    
-    if player.upper() not in ('X','O'):
-        continue
-    else:
-        player = player.upper()
-        if player =='X':
-            computer = 'O'
-            break
+ while gameState:
+    while True:
+        player = input('\nWould you like to be X or O: ')    
+        if player.upper() not in ('X','O'):
+            continue
         else:
-            computer = 'X'
-            break
-
- printBoard(board)
-
- while not (isBoardFull(board)):
-       #if the computer didnt win, player1 goes
-        if not checkWinner(board,computer):
-            playerMove(player)
-            printBoard(board)
-        else:
-            print(computer + ' is the winner')
-            break
-
-        #if player1 didnt win, the computer goes
-        if not checkWinner(board,player):
-            if isBoardFull(board):
+            player = player.upper()
+            if player =='X':
+                computer = 'O'
                 break
-            else:    
-                computerMove(computer)
-                printBoard(board)
-        else:
-            print(player + ' is the winner')
-            break   
+            else:
+                computer = 'X'
+                break
 
-   #display full board and notify players it was a tie
- if isBoardFull(board):
     printBoard(board)
-    print('Its a tie! The board is full')
+
+    while not (isBoardFull(board)):
+        #if the computer didnt win, player1 goes
+            if not checkWinner(board,computer):
+                playerMove(player)
+                printBoard(board)
+            else:
+                print(computer + ' is the winner')
+                clearBoard(board)
+                gameState = gameOver()
+                break
+                
+
+            #if player1 didnt win, the computer goes
+            if not checkWinner(board,player):
+                if isBoardFull(board):
+                    break
+                else:    
+                    computerMove(computer)
+                    printBoard(board)
+            else:
+                print(player + ' is the winner') 
+                clearBoard(board)
+                gameState = gameOver() 
+                break
+    #display full board and notify players it was a tie
+    if isBoardFull(board):
+        printBoard(board)
+        print('Its a tie! The board is full')
+        clearBoard(board)
+        gameState = gameOver()
+        
+
+
 
 
 
