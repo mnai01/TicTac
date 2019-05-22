@@ -3,6 +3,44 @@ from tkinter import *
 root = Tk()
 root.title("Tic Tac Toe")
 
+button = [' ' for x in range(10)]
+
+"""
+#not working
+#would like to use this function instead of hard coding like below
+def clearBoard(button):
+    for i in range(10):
+        button[i]["text"] = " "
+        print("pressed")
+
+"""
+
+
+def clearBoard(button):
+    button[1]["text"] = " "
+    button[2]["text"] = " "
+    button[3]["text"] = " "
+    button[4]["text"] = " "
+    button[5]["text"] = " "
+    button[6]["text"] = " "
+    button[7]["text"] = " "
+    button[8]["text"] = " "
+    button[9]["text"] = " "
+
+
+def isFreeSpace(position):
+    return button[position]["text"] == ' '
+
+
+"""
+#not working
+def isBoardFull(button):
+    if button["text"].count(' ') == 1:
+        return True
+    else:
+        return False
+"""
+
 o = Radiobutton(root, text='O', value=2)
 o.grid(row=0, column=2)
 
@@ -10,10 +48,10 @@ x = Radiobutton(root, text='X', value=1)
 x.grid(row=0, column=1)
 
 clearButton = Button(root, text="Clear", font=(
-    'Times 12 bold'), height=1, width=4)
+    'Times 12 bold'), height=1, width=4, command=(lambda: clearBoard(button)))
 clearButton.grid(row=0, column=3)
 
-button = [' ' for x in range(10)]
+button[0] = " "
 
 button[1] = Button(root, text="1", font=('Times 20 bold'), height=4, width=8)
 button[1].grid(row=1, column=1)
@@ -60,5 +98,14 @@ def checkWinner(letter):
     else:
         return False
 
+
+"""
+TESTING CODE(this can be deleted)
+#TypeError: string indices must be integers
+
+for i in range(10):
+    if button[i]["text"] == '1':
+        print("yes")
+"""
 
 root.mainloop()
