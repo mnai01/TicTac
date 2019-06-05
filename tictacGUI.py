@@ -5,27 +5,10 @@ root.title("Tic Tac Toe")
 
 button = [' ' for x in range(10)]
 
-"""
-#not working
-#would like to use this function instead of hard coding like below
-def clearBoard(button):
-    for i in range(10):
+def clearBoard(button): 
+    for i in range(1, 10):
         button[i]["text"] = " "
         print("pressed")
-
-"""
-
-
-def clearBoard(button):
-    button[1]["text"] = " "
-    button[2]["text"] = " "
-    button[3]["text"] = " "
-    button[4]["text"] = " "
-    button[5]["text"] = " "
-    button[6]["text"] = " "
-    button[7]["text"] = " "
-    button[8]["text"] = " "
-    button[9]["text"] = " "
 
 
 def isFreeSpace(position):
