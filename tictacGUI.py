@@ -5,24 +5,27 @@ root.title("Tic Tac Toe")
 
 button = [' ' for x in range(10)]
 
-def clearBoard(button): 
+
+def clearBoard(button):
     for i in range(1, 10):
         button[i]["text"] = " "
-        print("pressed")
+        print("cleared", i)
 
 
 def isFreeSpace(position):
     return button[position]["text"] == ' '
 
 
-"""
-#not working
+# not working
 def isBoardFull(button):
-    if button["text"].count(' ') == 1:
-        return True
-    else:
-        return False
-"""
+    for i in range(1, 10):
+        if button[i]["text"].count(' ') == 1:
+            print("is full")
+            return True
+        else:
+            print("is not full")
+            return False
+
 
 o = Radiobutton(root, text='O', value=2)
 o.grid(row=0, column=2)
@@ -84,11 +87,10 @@ def checkWinner(letter):
 
 """
 TESTING CODE(this can be deleted)
-#TypeError: string indices must be integers
+# TypeError: string indices must be integers
 
 for i in range(10):
     if button[i]["text"] == '1':
         print("yes")
 """
-
 root.mainloop()
