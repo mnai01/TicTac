@@ -15,8 +15,9 @@ def clearBoard(button):
 def isFreeSpace(position):
     return button[position]["text"] == ' '
 
-
 # not working
+
+
 def isBoardFull(button):
     for i in range(1, 10):
         if button[i]["text"].count(' ') == 1:
@@ -85,12 +86,4 @@ def checkWinner(letter):
         return False
 
 
-"""
-TESTING CODE(this can be deleted)
-# TypeError: string indices must be integers
-
-for i in range(10):
-    if button[i]["text"] == '1':
-        print("yes")
-"""
 root.mainloop()
