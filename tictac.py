@@ -153,7 +153,7 @@ def main():
     print('----------')
     print(' ' + '4' + ' | ' + '5' + ' | ' + '6')
     print('----------')
-    print(' ' + '7' + ' | ' + '9' + ' | ' + '9')
+    print(' ' + '7' + ' | ' + '8' + ' | ' + '9')
     while gameState:
         while True:
             player = input('\nWould you like to be X or O: ')
@@ -168,7 +168,9 @@ def main():
                     computer = 'X'
                     break
         while True:
-            playerTurn = input('\nWould you like to go First? Y or N: ')
+            playerTurn = input('\nWould you like to go first? Y or N: ')
+            
+            #Checks to see if player wants to go first
             if playerTurn.upper() not in ('Y', 'N'):
                 continue
             else:
