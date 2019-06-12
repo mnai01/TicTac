@@ -15,8 +15,6 @@ def clearBoard(button):
 def isFreeSpace(position):
     return button[position]["text"] == ' '
 
-# not working
-
 
 def isBoardFull(button):
     for i in range(1, 10):
