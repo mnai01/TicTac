@@ -167,30 +167,65 @@ def main():
                 else:
                     computer = 'X'
                     break
+        while True:
+            playerTurn = input('\nWould you like to go First? Y or N: ')
+            if playerTurn.upper() not in ('Y', 'N'):
+                continue
+            else:
+                playerTurn = playerTurn.upper();
+                if playerTurn == 'Y':
+                    while not (isBoardFull(board)):
 
-        while not (isBoardFull(board)):
+                        # if computer didnt win, the player goes
+                        if not checkWinner(board, computer):#player):
+                            playerMove(player)
+                            printBoard(board)
+                        else:
+                            print(player + ' is the winner')
+                            clearBoard(board)
+                            gameState = gameOver()
+                            break
 
-            # if player1 didnt win, the computer goes
-            if not checkWinner(board, player):
-                if isBoardFull(board):
-                    break
+                            # if the player didnt win, computer goes
+                        if not checkWinner(board, player):#computer):
+                            if isBoardFull(board):
+                                break
+                            else:
+                                computerMove(computer)
+                                printBoard(board)
+                        else:
+                            print(computer + ' is the winner')
+                            clearBoard(board)
+                            gameState = gameOver()
+                            break
                 else:
-                    computerMove(computer)
-                    printBoard(board)
-            else:
-                print(player + ' is the winner')
-                clearBoard(board)
-                gameState = gameOver()
-                break
-                # if the computer didnt win, player1 goes
-            if not checkWinner(board, computer):
-                playerMove(player)
-                printBoard(board)
-            else:
-                print(computer + ' is the winner')
-                clearBoard(board)
-                gameState = gameOver()
-                break
+                    while not (isBoardFull(board)):
+
+                        # if player1 didnt win, the computer goes
+                        if not checkWinner(board, player):
+
+                            if isBoardFull(board):
+                                break
+                            else:
+                                computerMove(computer)
+                                printBoard(board)
+                        else:
+                            print(player + ' is the winner')
+                            clearBoard(board)
+                            gameState = gameOver()
+                            break
+                            # if the computer didnt win, player1 goes
+                        if not checkWinner(board, computer):
+                            if isBoardFull(board):
+                                break
+                            else:
+                                playerMove(player)
+                                printBoard(board)
+                        else:
+                            print(computer + ' is the winner')
+                            clearBoard(board)
+                            gameState = gameOver()
+                            break
         # display full board and notify players it was a tie
         if isBoardFull(board):
             printBoard(board)
