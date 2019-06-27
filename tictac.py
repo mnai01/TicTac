@@ -169,34 +169,34 @@ def main():
                     break
         while True:
             playerTurn = input('\nWould you like to go first? Y or N: ')
-            
-            #Checks to see if player wants to go first
+
+            # Checks to see if player wants to go first
             if playerTurn.upper() not in ('Y', 'N'):
                 continue
             else:
-                playerTurn = playerTurn.upper();
+                playerTurn = playerTurn.upper()
                 if playerTurn == 'Y':
                     while not (isBoardFull(board)):
 
                         # if computer didnt win, the player goes
-                        if not checkWinner(board, computer):#player):
+                        if not checkWinner(board, computer):  # player):
                             playerMove(player)
                             printBoard(board)
                         else:
-                            print(player + ' is the winner')
+                            print(computer + ' is the winner')
                             clearBoard(board)
                             gameState = gameOver()
                             break
 
                             # if the player didnt win, computer goes
-                        if not checkWinner(board, player):#computer):
+                        if not checkWinner(board, player):  # computer):
                             if isBoardFull(board):
                                 break
                             else:
                                 computerMove(computer)
                                 printBoard(board)
                         else:
-                            print(computer + ' is the winner')
+                            print(player + ' is the winner')
                             clearBoard(board)
                             gameState = gameOver()
                             break
@@ -228,6 +228,7 @@ def main():
                             clearBoard(board)
                             gameState = gameOver()
                             break
+            break
         # display full board and notify players it was a tie
         if isBoardFull(board):
             printBoard(board)
