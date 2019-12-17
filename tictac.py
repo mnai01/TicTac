@@ -3,7 +3,10 @@ import copy
 
 board = [' ' for x in range(10)]
 
-
+####################################
+# Title: printBoard(board)
+# Description: Created a tic tac toe board with values from board array
+####################################
 def printBoard(board):
     print(' ' + board[1] + ' | ' + board[2] + ' | ' + board[3])
     print('----------')
@@ -11,36 +14,72 @@ def printBoard(board):
     print('----------')
     print(' ' + board[7] + ' | ' + board[8] + ' | ' + board[9])
 
-
+####################################
+# Title: clearBoard(board)
+# Description: Makes boared array values all blank
+####################################
 def clearBoard(board):
+    # for loop that iteratres 10 times
+    # to clear the whole board
     for i in range(10):
         board[i] = ' '
 
-
+####################################
+# Title: isFreeSpace(position)
+# Description: find if specific position on the board is blank
+# this represents an empty space
+####################################
 def isFreeSpace(position):
+    # if the specified position on the board
+    # is equal to ' '(which means the space is empty)
+    # then this function will return true
     return board[position] == ' '
 
-
+####################################
+# Title: isBoardFul(Board)
+# Description: Checks to see if the board arry is full
+# if it is full then that means all spaces are taken
+####################################
 def isBoardFull(board):
     if board.count(' ') == 1:
         return True
     else:
         return False
 
-
+####################################
+# Title: insertLetter(letter, position)
+# Description: places the letter X or O on specified position
+# of the board array
+####################################
 def insertLetter(letter, position):
+    # board at specifed position will now equal
+    # the specifed letter
     board[position] = letter
 
-
+####################################
+# Title: playerMove(player)
+# Description: allows the player to make a section
+# on where they would like to place their next peice
+####################################
 def playerMove(player):
     continueTurn = True
     while continueTurn:
+        # takes in the inpur of the user will only accept numbers from 1-9
+        # since those are the spaced represented on the board
         playerMove = input(player + ' select your move (1-9): ')
         try:
+            # convert the users input into an int
             playerMove = int(playerMove)
+            # is playerMove is not 1-9 then skip this and ask the user
+            # to select a num from 1-9
             if playerMove > 0 and playerMove < 10:
+                # is the space selected by the player is not free
+                # then ask player to select an empty space
                 if isFreeSpace(playerMove):
+                    # if it is a free spot then at the position use the players letter (X or O)
+                    # and place it at the specified location
                     insertLetter(player, playerMove)
+                    # end turn, exit the loop
                     continueTurn = False
                 else:
                     print("Please choose an empty space")
@@ -49,7 +88,10 @@ def playerMove(player):
         except ValueError:
             print('Please enter a number 1-9')
 
-
+####################################
+# Title: checkWinner(board, letter)
+# Description: used to see if the AI or player has won the game yet
+####################################
 def checkWinner(board, letter):
         # checks all 8 possible solutions to see if X or O is the winner
     if ((board[1] == letter and board[2] == letter and board[3] == letter) or
@@ -66,7 +108,10 @@ def checkWinner(board, letter):
     else:
         return False
 
-
+####################################
+# Title: getOpenSpaces(board)
+# Description: used to find available spaced
+####################################
 def getOpenSpaces(board):
     # list to be returned containing all available spaces
     availMoves = []
@@ -76,7 +121,11 @@ def getOpenSpaces(board):
             availMoves.append(x)
     return availMoves
 
-
+####################################
+# Title: computerMove(completter)
+# Description: used to execute the AI's move with there specified letter
+#
+####################################
 def computerMove(completter):
     possibleMoves = getOpenSpaces(board)
     move = 0
@@ -128,26 +177,35 @@ def computerMove(completter):
             print('Computer moved to space ' + str(move))
             break
 
-
+####################################
+# Title: gameOver()
+# Description: Once there is a winner the game will be over and a rematch can be
+# initialized if user selects Yes
+####################################
 def gameOver():
     while True:
         playAgain = input('Would you like to play again (y/n): ')
+        # makes sure user enters valid responce
         if playAgain.upper() not in ('Y', 'N', 'YES', 'NO'):
             print("Enter yes or no (y/n)")
             continue
         else:
+            # converts their responce to Capital and checks if its Y or YES
             if playAgain.upper() in ('Y', 'YES'):
                 return True
             else:
                 return False
 
-
+####################################
+# Title: Main()
+# Description: Where all the testing/main execution goes bringing the whole project together
+####################################
 def main():
-
     # Set to false when user says they do not want to play anymore, other wise
     # the game is keep running
     gameState = True
 
+    # Instructions for user displayed on the screen
     print('Use numbers 1-9 to place your X\'s or O\'s.')
     print(' ' + '1' + ' | ' + '2' + ' | ' + '3')
     print('----------')
