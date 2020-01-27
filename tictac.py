@@ -7,6 +7,8 @@ board = [' ' for x in range(10)]
 # Title: printBoard(board)
 # Description: Created a tic tac toe board with values from board array
 ####################################
+
+
 def printBoard(board):
     print(' ' + board[1] + ' | ' + board[2] + ' | ' + board[3])
     print('----------')
@@ -18,6 +20,8 @@ def printBoard(board):
 # Title: clearBoard(board)
 # Description: Makes boared array values all blank
 ####################################
+
+
 def clearBoard(board):
     # for loop that iteratres 10 times
     # to clear the whole board
@@ -29,6 +33,8 @@ def clearBoard(board):
 # Description: find if specific position on the board is blank
 # this represents an empty space
 ####################################
+
+
 def isFreeSpace(position):
     # if the specified position on the board
     # is equal to ' '(which means the space is empty)
@@ -40,6 +46,8 @@ def isFreeSpace(position):
 # Description: Checks to see if the board arry is full
 # if it is full then that means all spaces are taken
 ####################################
+
+
 def isBoardFull(board):
     if board.count(' ') == 1:
         return True
@@ -51,6 +59,8 @@ def isBoardFull(board):
 # Description: places the letter X or O on specified position
 # of the board array
 ####################################
+
+
 def insertLetter(letter, position):
     # board at specifed position will now equal
     # the specifed letter
@@ -61,6 +71,8 @@ def insertLetter(letter, position):
 # Description: allows the player to make a section
 # on where they would like to place their next peice
 ####################################
+
+
 def playerMove(player):
     continueTurn = True
     while continueTurn:
@@ -92,6 +104,8 @@ def playerMove(player):
 # Title: checkWinner(board, letter)
 # Description: used to see if the AI or player has won the game yet
 ####################################
+
+
 def checkWinner(board, letter):
         # checks all 8 possible solutions to see if X or O is the winner
     if ((board[1] == letter and board[2] == letter and board[3] == letter) or
@@ -112,6 +126,8 @@ def checkWinner(board, letter):
 # Title: getOpenSpaces(board)
 # Description: used to find available spaced
 ####################################
+
+
 def getOpenSpaces(board):
     # list to be returned containing all available spaces
     availMoves = []
@@ -126,7 +142,10 @@ def getOpenSpaces(board):
 # Description: used to execute the AI's move with there specified letter
 #
 ####################################
+
+
 def computerMove(completter):
+    # sets possible moves to open spaces
     possibleMoves = getOpenSpaces(board)
     move = 0
 
@@ -136,44 +155,67 @@ def computerMove(completter):
 # If it cannot, it checks which corners are open and randomly picks one
 # This has a time complexity of O(n^2) since we have to check both letters in all positions
     while True:
+        # creates array, 1st index is the comps letter, 2nd index is the players letter
         if completter == 'X':
             testLetters = ['X', 'O']
         else:
             testLetters = ['O', 'X']
 
+        # for loop to check with each letter
         for letter in (testLetters):
+            # iterates throught each possible place on the board. X representing the space possibleMoves represeting all the possibilities
+            # The first iteration is always the computers letter
             for x in possibleMoves:
+                # makes copy of board
                 boardCopy = copy.copy(board)
+                # testing each space with x (being ether X or O)
+                # sets each possible space in boardCopy to letter
                 boardCopy[x] = letter
+                # If check winner is true take that spot to ether win or block a win
                 if checkWinner(boardCopy, letter):
                     move = x
                     insertLetter(completter, move)
                     print('Computer moved to space ' + str(move))
                     return
-
+        # if middle position is possible, pick it
         if 5 in possibleMoves:
-            move = 5
-            insertLetter(completter, move)
-            print('Computer moved to space ' + str(move))
-            break
+            if testLetters[1]:
+                move = 5
+                insertLetter(completter, move)
+                print('Computer moved to space ' + str(move))
+                break
 
+        # If conor is available pick it.
         # This is O(n) since we have to loop through all of the possible solutions
         openCorners = []
+        # for loop to iteratre through possibleMoves[]
         for x in possibleMoves:
+            # if 1,3,7,9 is in possibleMoves add it to openCorners[]
             if x in [1, 3, 7, 9]:
                 openCorners.append(x)
+        # If openCorners is not empty
         if openCorners:
-                # maybe make a function here to pick a better corner than random
+            # maybe make a function here to pick a better corner than random
+            # move equals random corner
             move = random.choice(openCorners)
+            # insert the move
             insertLetter(completter, move)
             print('Computer moved to space ' + str(move))
             break
+        # if no corners
         else:
             openEdges = []
+            # for loop to iteratre through possibleMoves[]
             for x in possibleMoves:
+                # if 2,4,6,8 is in possibleMoves add it to openEdges[]
                 if x in [2, 4, 6, 8]:
                     openEdges.append(x)
+            # move equals random corner
             move = random.choice(openEdges)
+            # Was missing
+            # Fixed Skip when move to space 4
+            # insert the move
+            insertLetter(completter, move)
             print('Computer moved to space ' + str(move))
             break
 
@@ -182,6 +224,8 @@ def computerMove(completter):
 # Description: Once there is a winner the game will be over and a rematch can be
 # initialized if user selects Yes
 ####################################
+
+
 def gameOver():
     while True:
         playAgain = input('Would you like to play again (y/n): ')
@@ -200,6 +244,8 @@ def gameOver():
 # Title: Main()
 # Description: Where all the testing/main execution goes bringing the whole project together
 ####################################
+
+
 def main():
     # Set to false when user says they do not want to play anymore, other wise
     # the game is keep running
